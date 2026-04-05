@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathPath — Navigate Your Future</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #080E1A;
+      --navy-2: #0F1829;
+      --navy-3: #162035;
+      --navy-4: #1E2D4A;
+      --gold: #E8A838;
+      --gold-light: #F5C96A;
+      --gold-dim: rgba(232, 168, 56, 0.12);
+      --blue: #4A7CF7;
+      --blue-dim: rgba(74, 124, 247, 0.1);
+      --white: #F4F1EA;
+      --white-dim: rgba(244, 241, 234, 0.08);
+      --muted: rgba(244, 241, 234, 0.45);
+      --border: rgba(244, 241, 234, 0.09);
+      --border-gold: rgba(232, 168, 56, 0.25);
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 56px;
+      height: 72px;
+      background: rgba(8, 14, 26, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      background: var(--gold);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--navy);
+      letter-spacing: -1px;
+    }
+
+    .logo-text {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -0.3px;
+    }
+
+    .logo-text span {
+      color: var(--gold);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+      background: var(--white-dim);
+    }
+
+    .nav-links a.active {
+      color: var(--white);
+    }
+
+    .nav-dropdown-icon {
+      font-size: 10px;
+      opacity: 0.5;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: var(--font-body);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--border-gold);
+      color: var(--gold);
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      border: none;
+      color: var(--navy);
+      padding: 8px 22px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-light);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 120px 56px 80px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(244, 241, 234, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(244, 241, 234, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-glow-1 {
+      position: absolute;
+      top: -200px;
+      right: -100px;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(232, 168, 56, 0.07) 0%, transparent 65%);
+    }
+
+    .hero-glow-2 {
+      position: absolute;
+      bottom: -100px;
+      left: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(74, 124, 247, 0.06) 0%, transparent 65%);
+    }
+
+    .math-floaters {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .float-sym {
+      position: absolute;
+      font-family: var(--font-mono);
+      color: rgba(232, 168, 56, 0.08);
+      font-size: clamp(14px, 2vw, 22px);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Float positions */
+    .fs1 {
+      top: 14%;
+      right: 8%;
+      font-size: 16px;
+      color: rgba(74, 124, 247, 0.12);
+    }
+
+    .fs2 {
+      top: 22%;
+      right: 22%;
+      font-size: 13px;
+    }
+
+    .fs3 {
+      top: 55%;
+      right: 6%;
+      font-size: 18px;
+    }
+
+    .fs4 {
+      top: 70%;
+      right: 28%;
+      font-size: 12px;
+      color: rgba(74, 124, 247, 0.1);
+    }
+
+    .fs5 {
+      top: 30%;
+      left: 3%;
+      font-size: 14px;
+    }
+
+    .fs6 {
+      top: 80%;
+      left: 10%;
+      font-size: 12px;
+    }
+
+    .fs7 {
+      top: 12%;
+      left: 18%;
+      font-size: 11px;
+      color: rgba(74, 124, 247, 0.1);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 740px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold-dim);
+      border: 1px solid var(--border-gold);
+      color: var(--gold);
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 32px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+      }
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 6vw, 76px);
+      font-weight: 700;
+      line-height: 1.07;
+      letter-spacing: -2px;
+      color: var(--white);
+      margin-bottom: 28px;
+    }
+
+    .hero-headline em {
+      font-style: normal;
+      color: var(--gold);
+      position: relative;
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.75;
+      max-width: 520px;
+      margin-bottom: 48px;
+    }
+
+    .hero-cta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--gold);
+      color: var(--navy);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-cta:hover {
+      background: var(--gold-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--white);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      font-family: var(--font-body);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .btn-outline-cta:hover {
+      border-color: rgba(244, 241, 234, 0.25);
+      background: var(--white-dim);
+    }
+
+    .arrow-icon {
+      font-size: 16px;
+    }
+
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-top: 64px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -1px;
+    }
+
+    .stat-num span {
+      color: var(--gold);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+    }
+
+    /* ── HERO VISUAL (right side card stack) ── */
+    .hero-visual {
+      position: absolute;
+      right: 56px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 420px;
+      display: none;
+    }
+
+    @media(min-width: 1200px) {
+      .hero-visual {
+        display: block;
+      }
+    }
+
+    .course-card-stack {
+      position: relative;
+      height: 420px;
+    }
+
+    .course-card {
+      position: absolute;
+      background: var(--navy-3);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      width: 280px;
+    }
+
+    .cc-1 {
+      top: 0;
+      left: 80px;
+      z-index: 3;
+      border-color: var(--border-gold);
+    }
+
+    .cc-2 {
+      top: 60px;
+      left: 20px;
+      z-index: 2;
+      opacity: 0.7;
+    }
+
+    .cc-3 {
+      top: 120px;
+      left: 130px;
+      z-index: 1;
+      opacity: 0.45;
+    }
+
+    .card-tag {
+      display: inline-block;
+      background: var(--gold-dim);
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+      text-transform: uppercase;
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-level {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .card-btn {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 5px 14px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* ── SECTION COMMONS ── */
+    section {
+      padding: 100px 56px;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .section-label::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.15;
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 540px;
+      font-weight: 300;
+      line-height: 1.7;
+      margin-bottom: 56px;
+    }
+
+    /* ── WHO WE SERVE ── */
+    .who-section {
+      background: var(--navy-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .who-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .who-card {
+      background: var(--navy-2);
+      padding: 40px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .who-card:hover {
+      background: var(--navy-3);
+    }
+
+    .who-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      background: var(--gold-dim);
+      border: 1px solid var(--border-gold);
+    }
+
+    .who-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .who-desc {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .who-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--white-dim);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+
+    .link-pill:hover {
+      border-color: var(--border-gold);
+      color: var(--gold);
+    }
+
+    /* ── COURSES ── */
+    .courses-section {
+      background: var(--navy);
+    }
+
+    .courses-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 48px;
+      background: var(--navy-2);
+      padding: 4px;
+      border-radius: 10px;
+      width: fit-content;
+      border: 1px solid var(--border);
+    }
+
+    .tab {
+      padding: 8px 20px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      font-family: var(--font-body);
+      transition: all 0.15s;
+    }
+
+    .tab.active {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .tab:not(.active):hover {
+      color: var(--white);
+      background: var(--white-dim);
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .course-item {
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .course-item::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s;
+    }
+
+    .course-item:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-3px);
+    }
+
+    .course-item:hover::after {
+      transform: scaleX(1);
+    }
+
+    .ci-tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+
+    .ci-name {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.3;
+    }
+
+    .ci-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+
+    .ci-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .ci-level {
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .level-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .ci-arrow {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+
+    .course-item:hover .ci-arrow {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .view-all-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+    }
+
+    /* ── ROAD TO SUCCESS ── */
+    .rts-section {
+      background: var(--navy-3);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rts-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .rts-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 36px;
+    }
+
+    .rts-step {
+      display: flex;
+      gap: 24px;
+      position: relative;
+    }
+
+    .step-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .step-num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .step-line {
+      width: 1px;
+      flex: 1;
+      min-height: 40px;
+      background: var(--border);
+      margin: 4px 0;
+    }
+
+    .step-content {
+      padding-bottom: 36px;
+      padding-top: 8px;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .rts-visual {
+      position: relative;
+      padding: 40px;
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    .rts-visual-header {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .path-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 16px;
+    }
+
+    .path-node {
+      background: var(--navy-4);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--white);
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .path-node.active {
+      background: var(--gold-dim);
+      border-color: var(--border-gold);
+      color: var(--gold);
+    }
+
+    .path-node:hover {
+      border-color: var(--border-gold);
+    }
+
+    .path-arrow {
+      font-size: 14px;
+      color: var(--border);
+      padding: 0 8px;
+      flex-shrink: 0;
+    }
+
+    .rts-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: var(--gold);
+      color: var(--navy);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section {
+      background: var(--navy);
+      overflow: hidden;
+    }
+
+    .testimonials-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+
+    .ticker-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ticker-wrapper::before,
+    .ticker-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 120px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .ticker-wrapper::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--navy), transparent);
+    }
+
+    .ticker-wrapper::after {
+      right: 0;
+      background: linear-gradient(-90deg, var(--navy), transparent);
+    }
+
+    .ticker-track {
+      display: flex;
+      gap: 16px;
+      animation: ticker 40s linear infinite;
+      width: max-content;
+    }
+
+    .ticker-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes ticker {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .testi-card {
+      background: var(--navy-2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      width: 320px;
+      flex-shrink: 0;
+      transition: border-color 0.2s;
+    }
+
+    .testi-card:hover {
+      border-color: var(--border-gold);
+    }
+
+    .testi-stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 16px;
+    }
+
+    .star {
+      color: var(--gold);
+      font-size: 14px;
+    }
+
+    .testi-quote {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-style: italic;
+      margin-bottom: 20px;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .author-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid var(--border-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gold);
+      font-family: var(--font-display);
+      flex-shrink: 0;
+    }
+
+    .author-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .author-role {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── CONTACT CTA ── */
+    .contact-section {
+      background: var(--navy-2);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .contact-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 56px);
+      font-weight: 600;
+      color: var(--white);
+      letter-spacing: -1.5px;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .contact-title span {
+      color: var(--gold);
+    }
+
+    .contact-sub {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .contact-form {
+      display: flex;
+      gap: 8px;
+      max-width: 440px;
+      margin: 0 auto 16px;
+    }
+
+    .contact-input {
+      flex: 1;
+      background: var(--navy-3);
+      border: 1px solid var(--border);
+      color: var(--white);
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: var(--font-body);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .contact-input::placeholder {
+      color: rgba(244, 241, 234, 0.25);
+    }
+
+    .contact-input:focus {
+      border-color: var(--border-gold);
+    }
+
+    .contact-send {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 12px 22px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+
+    .contact-send:hover {
+      background: var(--gold-light);
+    }
+
+    .contact-note {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      border-top: 1px solid var(--border);
+      padding: 48px 56px 32px;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand {
+      max-width: 280px;
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-top: 14px;
+    }
+
+    .footer-col-title {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: rgba(244, 241, 234, 0.35);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--white);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(244, 241, 234, 0.2);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 12px;
+    }
+
+    .social-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: transparent;
+    }
+
+    .social-btn:hover {
+      border-color: var(--border-gold);
+      color: var(--gold);
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--navy);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--navy-4);
+      border-radius: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <div class="logo-mark">M∑</div>
+      <span class="logo-text">Math<span>Path</span></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Home</a></li>
+      <li><a href="#">About us</a></li>
+      <li><a href="#">Courses <span class="nav-dropdown-icon">▾</span></a></li>
+
+      <li><a href="#">Contact us</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn-ghost">Log in</button>
+      <button class="btn-primary">Get started →</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-grid"></div>
+      <div class="hero-glow-1"></div>
+      <div class="hero-glow-2"></div>
+      <div class="math-floaters">
+        <div class="float-sym fs1">∫₀^∞ e⁻ˣ dx = 1</div>
+        <div class="float-sym fs2">lim(n→∞) (1+1/n)ⁿ = e</div>
+        <div class="float-sym fs3">∇²φ = ρ/ε₀</div>
+        <div class="float-sym fs4">P(A∩B) = P(A)·P(B|A)</div>
+        <div class="float-sym fs5">f'(x) = lim[f(x+h)-f(x)]/h</div>
+        <div class="float-sym fs6">Σᵢ₌₁ⁿ i = n(n+1)/2</div>
+        <div class="float-sym fs7">det(A) = ad - bc</div>
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="badge-dot"></div>
+        IB · AP · IGCSE · A-Level · JEE · Olympiad
+      </div>
+      <h1 class="hero-headline">
+        Your path to<br>mathematics mastery
+      </h1>
+      <p class="hero-sub">
+        The first platform that puts a dedicated expert beside every student —
+        personalized guidance across IB, AP, IGCSE, A-Level, Olympiad, and JEE,
+        available the moment they need it.
+      </p>
+      <div class="hero-cta">
+        <a href="#" class="btn-cta">Explore courses <span class="arrow-icon">→</span></a>
+        <a href="#" class="btn-outline-cta">My Road to Success</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num">12<span>K+</span></span>
+          <span class="stat-label">Students taught</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">98<span>%</span></span>
+          <span class="stat-label">Satisfaction rate</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">40<span>+</span></span>
+          <span class="stat-label">Courses offered</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num">15<span>+</span></span>
+          <span class="stat-label">Countries served</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating course card stack -->
+    <div class="hero-visual">
+      <div class="course-card-stack">
+        <div class="course-card cc-3">
+          <div class="card-tag">IGCSE</div>
+          <div class="card-title">Add Math 0606</div>
+        </div>
+        <div class="course-card cc-2">
+          <div class="card-tag">A-Level</div>
+          <div class="card-title">Pure Math Paper 3</div>
+        </div>
+        <div class="course-card cc-1">
+          <div class="card-tag">IBDP</div>
+          <div class="card-title">Math AA Higher Level</div>
+          <div class="card-desc">Comprehensive preparation covering all HL topics with rigorous problem-solving
+            methodology.</div>
+          <div class="card-meta">
+            <span class="card-level">Advanced · 120h</span>
+            <button class="card-btn">Enroll</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- WHO WE SERVE -->
+  <section class="who-section">
+    <div class="section-label">Who we serve</div>
+    <h2 class="section-title">Built for every stakeholder</h2>
+    <p class="section-sub">Whether you're a student aiming for top scores, a parent tracking progress, a school building
+      curriculum, or a government shaping policy — MathPath has a portal for you.</p>
+    <div class="who-grid">
+      <div class="who-card">
+        <div class="who-icon">🎓</div>
+        <div class="who-title">Students & Parents</div>
+        <div class="who-desc">Access expert-curated courses, track progress, and get deep insights on strengths and
+          areas to improve. Parents stay in the loop every step of the way.</div>
+        <div class="who-links">
+          <a class="link-pill" href="#">Log in ↗</a>
+          <a class="link-pill" href="#">Sign up ↗</a>
+        </div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🏫</div>
+        <div class="who-title">Schools</div>
+        <div class="who-desc">Integrate MathPath into your curriculum. Monitor class-wide analytics, assign custom
+          paths, and give every student the support they need to excel in board exams.</div>
+        <div class="who-links">
+          <a class="link-pill" href="#">Log in ↗</a>
+          <a class="link-pill" href="#">Sign up ↗</a>
+        </div>
+      </div>
+      <div class="who-card">
+        <div class="who-icon">🏛️</div>
+        <div class="who-title">Government</div>
+        <div class="who-desc">Partner with us to bring quality mathematics education to students at scale. Access
+          data-driven reports on learning outcomes across regions and curriculums.</div>
+        <div class="who-links">
+          <a class="link-pill" href="#">Log in ↗</a>
+          <a class="link-pill" href="#">Sign up ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COURSES -->
+  <section class="courses-section">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+      <div>
+        <div class="section-label">Courses</div>
+        <h2 class="section-title">Find your program</h2>
+        <p class="section-sub" style="margin-bottom:0;">Every major curriculum and exam board, taught by specialists.
+        </p>
+      </div>
+      <div style="padding-top:12px;">
+        <div class="courses-tabs">
+          <button class="tab active">K-12</button>
+          <button class="tab">IBDP / IB MYP</button>
+          <button class="tab">AP</button>
+          <button class="tab">IGCSE</button>
+          <button class="tab">A-Level</button>
+          <button class="tab">Olympiad</button>
+          <button class="tab">UG Admission</button>
+        </div>
+      </div>
+    </div>
+    <div style="height:48px;"></div>
+    <div class="courses-grid">
+
+      <div class="course-item">
+        <div class="ci-tag">IBDP</div>
+        <div class="ci-name">Math AA Higher Level</div>
+        <div class="ci-desc">Pure mathematics focus. Rigorous problem-solving for students aiming for top STEM
+          universities worldwide.</div>
+        <div class="ci-footer">
+          <div class="ci-level">
+            <div class="level-dot"></div> Advanced
+          </div>
+          <div class="ci-arrow">→</div>
+        </div>
+      </div>
+
+      <div class="course-item">
+        <div class="ci-tag">IBDP</div>
+        <div class="ci-name">Math Applications & Interpretation SL</div>
+        <div class="ci-desc">Applications and Interpretation — ideal for students who use mathematics in real-world and
+          social contexts.</div>
+        <div class="ci-footer">
+          <div class="ci-level">
+            <div class="level-dot"></div> Standard
+          </div>
+          <div class="ci-arrow">→</div>
+        </div>
+      </div>
+
+      <div class="course-item">
+        <div class="ci-tag">AP</div>
+        <div class="ci-name">AP Calculus BC</div>
+        <div class="ci-desc">Comprehensive coverage of single-variable calculus including series, parametric, and polar
+          functions.</div>
+        <div class="ci-footer">
+          <div class="ci-level">
+            <div class="level-dot"></div> Advanced
+          </div>
+          <div class="ci-arrow">→</div>
+        </div>
+      </div>
+
+      <div class="course-item">
+        <div class="ci-tag">AP</div>
+        <div class="ci-name">AP Statistics</div>
+        <div class="ci-desc">Data analysis, probability, and statistical inference. Excellent foundation for
+          quantitative studies.</div>
+        <div class="ci-footer">
+          <div class="ci-level">
+            <div class="level-dot"></div> Standard
+          </div>
+          <div class="ci-arrow">→</div>
+        </div>
+      </div>
+
+      <div class="course-item">
+        <div class="ci-tag">IGCSE</div>
+        <div class="ci-name">Additional Math 0606</div>
+        <div class="ci-desc">Extends core IGCSE with algebra, calculus, and trigonometry — perfect preparation for
+          A-Level.</div>
+        <div class="ci-footer">
+          <div class="ci-level">
+            <div class="level-dot"></div> Extended
+          </div>
+          <div class="ci-arrow">→</div>
+        </div>
+      </div>
+
+      <div class="course-item">
+        <div class="ci-tag">A-Level</div>
+        <div class="ci-name">A Level Math 9709</div>
+        <div class="ci-desc">Full A-Level preparation: Pure Math 3, Probability & Statistics, and Mechanics papers
+          covered.</div>
+        <div class="ci-footer">
+          <div class="ci-level">
+            <div class="level-dot"></div> Advanced
+          </div>
+          <div class="ci-arrow">→</div>
+        </div>
+      </div>
+
+      <div class="course-item">
+        <div class="ci-tag">Olympiad</div>
+        <div class="ci-name">American Math Olympiad</div>
+        <div class="ci-desc">AMC/AIME/USAMO prep — syllabus, scoring strategy, and deep problem-solving techniques.
+        </div>
+        <div class="ci-footer">
+          <div class="ci-level">
+            <div class="level-dot"></div> Competitive
+          </div>
+          <div class="ci-arrow">→</div>
+        </div>
+      </div>
+
+      <div class="course-item">
+        <div class="ci-tag">UG Admission</div>
+        <div class="ci-name">JEE Mains</div>
+        <div class="ci-desc">India's most competitive engineering entrance. Full syllabus coverage, QP pattern, and
+          scoring strategy.</div>
+        <div class="ci-footer">
+          <div class="ci-level">
+            <div class="level-dot"></div> Competitive
+          </div>
+          <div class="ci-arrow">→</div>
+        </div>
+      </div>
+
+    </div>
+    <div class="view-all-row">
+      <a href="#" class="btn-outline-cta">View all 40+ courses →</a>
+    </div>
+  </section>
+  <!-- ROAD TO SUCCESS -->
+  <section class="rts-section">
+    <div class="rts-inner">
+      <div>
+        <div class="section-label">My Road to Success</div>
+        <h2 class="section-title">Your path, built for you</h2>
+        <p class="section-sub">Tell us where you are and where you want to go. We'll map out the exact courses,
+          timelines, and milestones to get you there.</p>
+        <div class="rts-steps">
+          <div class="rts-step">
+            <div class="step-left">
+              <div class="step-num">1</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <div class="step-title">Tell us your goal</div>
+              <div class="step-desc">Choose your target exam, university, or career path. We understand every major
+                curriculum worldwide.</div>
+            </div>
+          </div>
+          <div class="rts-step">
+            <div class="step-left">
+              <div class="step-num">2</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <div class="step-title">Get your roadmap</div>
+              <div class="step-desc">A personalised course plan — sequenced, timed, and prioritised — appears instantly
+                based on your profile.</div>
+            </div>
+          </div>
+          <div class="rts-step">
+            <div class="step-left">
+              <div class="step-num">3</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <div class="step-title">Track & adapt</div>
+              <div class="step-desc">As you progress, your path adapts. Struggling with integration? We prioritise it.
+                Crushing probability? We accelerate.</div>
+            </div>
+          </div>
+          <div class="rts-step">
+            <div class="step-left">
+              <div class="step-num">4</div>
+            </div>
+            <div class="step-content">
+              <div class="step-title">Reach your destination</div>
+              <div class="step-desc">Arrive at your exam date prepared, confident, and ready to perform at your absolute
+                best.</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:8px;">
+          <a href="#" class="btn-cta">Start my roadmap →</a>
+        </div>
+      </div>
+
+      <div class="rts-visual">
+        <div class="rts-badge">NEW</div>
+        <div class="rts-visual-header">Sample pathway · IB → Oxford</div>
+        <div class="path-row">
+          <div class="path-node active">IB MYP Std Math</div>
+          <div class="path-arrow">→</div>
+          <div class="path-node active">IB MYP Ext Math</div>
+        </div>
+        <div class="path-row">
+          <div class="path-node active">IBDP Math AA HL</div>
+          <div class="path-arrow">→</div>
+          <div class="path-node">AMC Olympiad</div>
+        </div>
+        <div class="path-row">
+          <div class="path-node">STEP Paper 2</div>
+          <div class="path-arrow">→</div>
+          <div class="path-node" style="background:rgba(232,168,56,0.15);border-color:var(--gold);color:var(--gold);">🎓
+            Oxford</div>
+        </div>
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border);">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:12px;letter-spacing:0.5px;">ALSO IN YOUR PROFILE
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span
+              style="background:var(--blue-dim);border:1px solid rgba(74,124,247,0.2);color:#6B9EFF;padding:5px 12px;border-radius:6px;font-size:11px;font-weight:500;">Profile
+              Building</span>
+            <span
+              style="background:var(--white-dim);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;font-size:11px;">Debate</span>
+            <span
+              style="background:var(--white-dim);border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:6px;font-size:11px;">Social
+              Work</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials-section">
+    <div class="testimonials-header">
+      <div>
+        <div class="section-label">Reviews</div>
+        <h2 class="section-title" style="margin-bottom:0;">What our students say</h2>
+      </div>
+      <p style="font-size:14px;color:var(--muted);max-width:280px;text-align:right;line-height:1.6;">Hover to pause ·
+        Scroll continuously</p>
+    </div>
+
+    <div class="ticker-wrapper">
+      <div class="ticker-track">
+        <!-- Row 1 - duplicated for loop -->
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"My daughter went from a 5 to a 7 in IBDP Math AA HL in just one semester. The
+            structured approach and constant feedback made all the difference."</div>
+          <div class="testi-author">
+            <div class="author-avatar">PK</div>
+            <div>
+              <div class="author-name">Priya Krishnamurthy</div>
+              <div class="author-role">Parent · IB DP</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"Cleared JEE Mains with 98.7 percentile. The topic-wise breakdowns and timed mock
+            tests were exactly what I needed to crack the pattern."</div>
+          <div class="testi-author">
+            <div class="author-avatar">AR</div>
+            <div>
+              <div class="author-name">Aarav Rajput</div>
+              <div class="author-role">Student · JEE Mains 2024</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"STEP Paper 2 felt impossible until MathPath broke down every problem type. I got an
+            S grade and a conditional offer from Cambridge."</div>
+          <div class="testi-author">
+            <div class="author-avatar">EW</div>
+            <div>
+              <div class="author-name">Eleanor Webb</div>
+              <div class="author-role">Student · A-Level / STEP</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"As a school coordinator, the analytics dashboard gives me visibility I never had
+            before. Teachers save hours each week on progress tracking."</div>
+          <div class="testi-author">
+            <div class="author-avatar">MS</div>
+            <div>
+              <div class="author-name">Mr. M. Sharma</div>
+              <div class="author-role">Head of Maths · Delhi</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"AP Calculus BC in 10 weeks felt intense but the daily structure kept me on track.
+            Got a 5 and college credit before I even started uni."</div>
+          <div class="testi-author">
+            <div class="author-avatar">LN</div>
+            <div>
+              <div class="author-name">Lucas Nguyen</div>
+              <div class="author-role">Student · AP Calculus BC</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"My son qualified for the Australian Math Olympiad shortlist. The preparation was
+            methodical and the mentors genuinely cared about his growth."</div>
+          <div class="testi-author">
+            <div class="author-avatar">SK</div>
+            <div>
+              <div class="author-name">Sunita Kapoor</div>
+              <div class="author-role">Parent · Olympiad</div>
+            </div>
+          </div>
+        </div>
+        <!-- Duplicate for seamless loop -->
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"My daughter went from a 5 to a 7 in IBDP Math AA HL in just one semester. The
+            structured approach and constant feedback made all the difference."</div>
+          <div class="testi-author">
+            <div class="author-avatar">PK</div>
+            <div>
+              <div class="author-name">Priya Krishnamurthy</div>
+              <div class="author-role">Parent · IB DP</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"Cleared JEE Mains with 98.7 percentile. The topic-wise breakdowns and timed mock
+            tests were exactly what I needed to crack the pattern."</div>
+          <div class="testi-author">
+            <div class="author-avatar">AR</div>
+            <div>
+              <div class="author-name">Aarav Rajput</div>
+              <div class="author-role">Student · JEE Mains 2024</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"STEP Paper 2 felt impossible until MathPath broke down every problem type. I got an
+            S grade and a conditional offer from Cambridge."</div>
+          <div class="testi-author">
+            <div class="author-avatar">EW</div>
+            <div>
+              <div class="author-name">Eleanor Webb</div>
+              <div class="author-role">Student · A-Level / STEP</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"As a school coordinator, the analytics dashboard gives me visibility I never had
+            before. Teachers save hours each week on progress tracking."</div>
+          <div class="testi-author">
+            <div class="author-avatar">MS</div>
+            <div>
+              <div class="author-name">Mr. M. Sharma</div>
+              <div class="author-role">Head of Maths · Delhi</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"AP Calculus BC in 10 weeks felt intense but the daily structure kept me on track.
+            Got a 5 and college credit before I even started uni."</div>
+          <div class="testi-author">
+            <div class="author-avatar">LN</div>
+            <div>
+              <div class="author-name">Lucas Nguyen</div>
+              <div class="author-role">Student · AP Calculus BC</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-quote">"My son qualified for the Australian Math Olympiad shortlist. The preparation was
+            methodical and the mentors genuinely cared about his growth."</div>
+          <div class="testi-author">
+            <div class="author-avatar">SK</div>
+            <div>
+              <div class="author-name">Sunita Kapoor</div>
+              <div class="author-role">Parent · Olympiad</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <section class="contact-section">
+    <div class="contact-inner">
+      <div class="section-label" style="justify-content:center;">Get in touch</div>
+      <h2 class="contact-title">Ready to start your <span>journey?</span></h2>
+      <p class="contact-sub">Drop your email and a counsellor will reach out within 24 hours to help you pick the right
+        path.</p>
+      <div class="contact-form">
+        <input class="contact-input" type="email" placeholder="your@email.com">
+        <button class="contact-send">Get started →</button>
+      </div>
+      <p class="contact-note">No spam. Unsubscribe any time.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="text-decoration:none;">
+          <div class="logo-mark">M∑</div>
+          <span class="logo-text">Math<span>Path</span></span>
+        </a>
+        <p class="footer-tagline">Expert mathematics education for every curriculum — IB, AP, IGCSE, A-Level, Olympiad,
+          JEE, and beyond.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Courses</div>
+        <ul class="footer-links">
+          <li><a href="#">IBDP Math</a></li>
+          <li><a href="#">AP Calculus & Stats</a></li>
+          <li><a href="#">IGCSE Math</a></li>
+          <li><a href="#">A-Level 9709</a></li>
+          <li><a href="#">Olympiad Prep</a></li>
+          <li><a href="#">JEE / BITSAT</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#">For Students</a></li>
+          <li><a href="#">For Parents</a></li>
+          <li><a href="#">For Schools</a></li>
+          <li><a href="#">For Government</a></li>
+          <li><a href="#">My Road to Success</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 MathPath. All rights reserved.</div>
+      <div class="footer-socials">
+        <button class="social-btn">in</button>
+        <button class="social-btn">tw</button>
+        <button class="social-btn">yt</button>
+        <button class="social-btn">ig</button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+
+    // Nav scroll effect
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        nav.style.borderBottomColor = 'rgba(244,241,234,0.12)';
+      } else {
+        nav.style.borderBottomColor = 'rgba(244,241,234,0.09)';
+      }
+    });
+  </script>
+</body>
+
+</html>
